@@ -5,6 +5,7 @@
 
     <CheckBoxPreference
         android:title="@string/pref_notification_opt"
-        android:key="@string/pref_receive_nots" />
+        android:key="@string/pref_receive_nots"
+        android:defaultValue="@string/pref_receive_nots_defualt" />
 
 </PreferenceScreen>

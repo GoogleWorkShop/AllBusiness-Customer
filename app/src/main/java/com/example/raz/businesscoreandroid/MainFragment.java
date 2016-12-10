@@ -1,5 +1,6 @@
 package com.example.raz.businesscoreandroid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,14 +9,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-
-import android.content.Intent;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 /**
- * Main activity fragment.
- * Here the user can choose between viewing his businesses and appointments
+ * Created by barjon on 10-Dec-16.
  */
 public class MainFragment extends Fragment {
 
@@ -24,12 +26,24 @@ public class MainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // Add this line in order for this fragment to handle menu events.
         setHasOptionsMenu(true);
-
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main_fragment, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//        if (id == R.id.action_refresh) {
+//            updateWeather();
+//            return true;
+//        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -39,39 +53,32 @@ public class MainFragment extends Fragment {
         // The ArrayAdapter will take data from a source and
         // use it to populate the ListView it's attached to.
 
-        final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         // Get a reference to the ListView, and attach this adapter to it.
         Button my_businesses = (Button) rootView.findViewById(R.id.my_businesses);
-//        ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
-//        listView.setAdapter(mForecastAdapter);
 //        my_businesses.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //
 //            @Override
 //            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                Intent intent = new Intent(getActivity(), MyBusinessesActivity.class)
+//                String forecast = mForecastAdapter.getItem(position);
+//                Intent intent = new Intent(getActivity(), DetailActivity.class)
 //                        .putExtra(Intent.EXTRA_TEXT, forecast);
 //                startActivity(intent);
 //            }
-//
 //        });
 
-        Button my_appoitenments = (Button) rootView.findViewById(R.id.my_appointments_opt);
-//        my_appoitenments.setOnItemClickListener(new AdapterView.OnItemClickListener()
-//
-//        {
+        Button my_appointments = (Button) rootView.findViewById(R.id.my_appointments_opt);
+//        my_appointments.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //
 //            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position,
-//                                    long l) {
-//                Intent intent = new Intent(getActivity(), MyBusinessesActivity.class)
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                String forecast = mForecastAdapter.getItem(position);
+//                Intent intent = new Intent(getActivity(), DetailActivity.class)
 //                        .putExtra(Intent.EXTRA_TEXT, forecast);
 //                startActivity(intent);
 //            }
 //        });
-
         return rootView;
     }
-
-
 }
