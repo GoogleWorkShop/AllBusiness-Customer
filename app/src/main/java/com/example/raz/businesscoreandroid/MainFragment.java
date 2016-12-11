@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -57,16 +58,16 @@ public class MainFragment extends Fragment {
 
         // Get a reference to the ListView, and attach this adapter to it.
         Button my_businesses = (Button) rootView.findViewById(R.id.my_businesses);
-//        my_businesses.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                String forecast = mForecastAdapter.getItem(position);
-//                Intent intent = new Intent(getActivity(), DetailActivity.class)
-//                        .putExtra(Intent.EXTRA_TEXT, forecast);
-//                startActivity(intent);
-//            }
-//        });
+        my_businesses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), R.string.get_ready_for_business,
+                        Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), MyBusinessesActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, "Get This Bizzzz");
+                startActivity(intent);
+            }
+        });
 
         Button my_appointments = (Button) rootView.findViewById(R.id.my_appointments_opt);
 //        my_appointments.setOnItemClickListener(new AdapterView.OnItemClickListener() {
