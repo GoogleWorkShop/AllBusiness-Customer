@@ -58,6 +58,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+
+
+
     private enum ACTION_TYPE{LOGIN,REGISTER};
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -100,33 +103,37 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin(ACTION_TYPE.LOGIN);
-                    return true;
-                }
-                return false;
-            }
-        });
+//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+//                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+//                    attemptLogin(ACTION_TYPE.LOGIN);
+//                    return true;
+//               }
+//                return false;
+//            }
+//        });
 
         mAuth = FirebaseAuth.getInstance();
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin(ACTION_TYPE.LOGIN );
-            }
-        });
-        Button mEmailRegisterInButton = (Button) findViewById(R.id.email_Register_button);
-        mEmailRegisterInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin(ACTION_TYPE.REGISTER);
-            }
-        });
 
+
+
+
+ //       Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+//        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                attemptLogin(ACTION_TYPE.LOGIN );
+//            }
+//        });
+//        Button mEmailRegisterInButton = (Button) findViewById(R.id.email_Register_button);
+//        mEmailRegisterInButton.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                attemptLogin(ACTION_TYPE.REGISTER);
+//            }
+//        });
+//
 
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -156,12 +163,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         } else {
-            // User is signed out
 
         }
 
 
     }
+
+
+    public void RegisterOnClick(View view) {
+        attemptLogin(ACTION_TYPE.REGISTER );
+    }
+
+    public void SignInOnClick(View view) {
+        attemptLogin(ACTION_TYPE.LOGIN );
+    }
+
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
@@ -257,10 +273,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password, action);
             mAuthTask.execute((Void) null);
-
-
-
-
 
         }
     }
@@ -398,7 +410,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 // signed in user can be handled in the listener.
                                 if (!task.isSuccessful()) {
                                     Log.w("debug:failedLoginUser", "signInWithEmail", task.getException());
-                                    Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "Authentication failed : "+ task.getException().getMessage() , Toast.LENGTH_LONG).show();
                                 } else {
                                     Log.d("debug:LogedUser", "signInWithEmail:onComplete:" + task.isSuccessful());
                                     Toast.makeText(LoginActivity.this, "login succseful.", Toast.LENGTH_SHORT).show();
@@ -422,7 +434,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                        // signed in user can be handled in the listener.
                        if (!task.isSuccessful()) {
                            Log.w("debug:failedCreateUser", "signInWithEmail", task.getException());
-                           Toast.makeText(LoginActivity.this, "failed to create user.",Toast.LENGTH_SHORT).show();
+                           Toast.makeText(LoginActivity.this, "failed to create user : "+ task.getException().getMessage(),Toast.LENGTH_LONG).show();
                        } else {//did sucssed
                            Log.d("debug:CreatedUser", "createUserWithEmail:onComplete:" + task.isSuccessful());
                            Toast.makeText(LoginActivity.this, "new user created.", Toast.LENGTH_SHORT).show();
@@ -447,7 +459,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                finish();
+                //finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
