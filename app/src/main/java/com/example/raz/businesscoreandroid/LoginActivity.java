@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    private enum ACTION_TYPE{LOGIN,REGISTER};
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -103,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    attemptLogin(ACTION_TYPE.LOGIN);
                     return true;
                 }
                 return false;
@@ -115,7 +116,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                attemptLogin(ACTION_TYPE.LOGIN );
+            }
+        });
+        Button mEmailRegisterInButton = (Button) findViewById(R.id.email_Register_button);
+        mEmailRegisterInButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptLogin(ACTION_TYPE.REGISTER);
             }
         });
 
@@ -128,6 +136,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if (user != null) {
                     // User is signed in
                     Log.d("debug:authstate", "onAuthStateChanged:signed_in:" + user.getUid());
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+
 
                 } else {
                     // User is signed out
@@ -201,7 +212,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
+    private void attemptLogin(ACTION_TYPE action) {
 //        if (mAuthTask != null) {
 //            return;
 //        }
@@ -244,7 +255,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(email, password, action);
             mAuthTask.execute((Void) null);
 
 
@@ -362,74 +373,67 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
+        private final ACTION_TYPE mAction;
 
 
-        UserLoginTask(String email, String password) {
+        UserLoginTask(String email, String password,ACTION_TYPE action) {
             mEmail = email;
             mPassword = password;
+            mAction = action;
+
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            boolean registeredUserFlag = false;
-            mAuth.signInWithEmailAndPassword(mEmail,mPassword)
-            .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
+            if (mAction == ACTION_TYPE.LOGIN) {
+                mAuth.signInWithEmailAndPassword(mEmail, mPassword)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                    // If sign in fails, display a message to the user. If sign in succeeds
-                    // the auth state listener will be notified and logic to handle the
-                    // signed in user can be handled in the listener.
-                    if (!task.isSuccessful()) {
-                        Log.w("debug:failedLoginUser", "signInWithEmail", task.getException());
-                       //Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        Log.d("debug:LogedUser", "signInWithEmail:onComplete:" + task.isSuccessful());
+                                // If sign in fails, display a message to the user. If sign in succeeds
+                                // the auth state listener will be notified and logic to handle the
+                                // signed in user can be handled in the listener.
+                                if (!task.isSuccessful()) {
+                                    Log.w("debug:failedLoginUser", "signInWithEmail", task.getException());
+                                    Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Log.d("debug:LogedUser", "signInWithEmail:onComplete:" + task.isSuccessful());
+                                    Toast.makeText(LoginActivity.this, "login succseful.", Toast.LENGTH_SHORT).show();
 
 
-                    }
+                                }
 
-                    // ...
-                }
-            });
-            FirebaseUser user = mAuth.getCurrentUser();
-            if(user != null){ //authentication succsees
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                return true;
+                                // ...
+                            }
+                        });
             }
 
             // TODO: register the new account here.
-            mAuth.createUserWithEmailAndPassword(mEmail,mPassword).addOnCompleteListener( new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
+           if(mAction == ACTION_TYPE.REGISTER) {
+               mAuth.createUserWithEmailAndPassword(mEmail, mPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                   @Override
+                   public void onComplete(@NonNull Task<AuthResult> task) {
 
-                    // If sign in fails, display a message to the user. If sign in succeeds
-                    // the auth state listener will be notified and logic to handle the
-                    // signed in user can be handled in the listener.
-                    if (!task.isSuccessful()) {
-                        Log.w("debug:failedCreateUser", "signInWithEmail", task.getException());
-                       // Toast.makeText(LoginActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
-                    }
-                    else{//did sucssed
-                        Log.d("debug:CreatedUser", "createUserWithEmail:onComplete:" + task.isSuccessful());
-                        Toast.makeText(LoginActivity.this, "new user created.",Toast.LENGTH_SHORT).show();
+                       // If sign in fails, display a message to the user. If sign in succeeds
+                       // the auth state listener will be notified and logic to handle the
+                       // signed in user can be handled in the listener.
+                       if (!task.isSuccessful()) {
+                           Log.w("debug:failedCreateUser", "signInWithEmail", task.getException());
+                           Toast.makeText(LoginActivity.this, "failed to create user.",Toast.LENGTH_SHORT).show();
+                       } else {//did sucssed
+                           Log.d("debug:CreatedUser", "createUserWithEmail:onComplete:" + task.isSuccessful());
+                           Toast.makeText(LoginActivity.this, "new user created.", Toast.LENGTH_SHORT).show();
 
-                         }
+                       }
 
 
-                }
-            });
+                   }
+               });
+           }
 
-            user = mAuth.getCurrentUser();
-            if(user != null) { //authentication succsees
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                return true;
-            }
 
 
             return true;
