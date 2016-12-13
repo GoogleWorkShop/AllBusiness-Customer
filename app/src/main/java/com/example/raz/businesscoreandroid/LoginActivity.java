@@ -171,7 +171,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     public void RegisterOnClick(View view) {
-        attemptLogin(ACTION_TYPE.REGISTER );
+
+        Intent regIntent = new Intent(this,RegistrationActivity.class);
+        startActivity(regIntent);
     }
 
     public void SignInOnClick(View view) {

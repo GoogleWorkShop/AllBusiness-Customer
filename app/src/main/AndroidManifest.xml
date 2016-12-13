@@ -18,15 +18,16 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/app_name" />
+            android:label="@string/app_name">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/action_settings"
@@ -36,7 +37,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".MyBusinessesActivity"></activity>
+        <activity android:name=".MyBusinessesActivity" />
+        <activity android:name=".RegistrationActivity"></activity>
     </application>
 
 </manifest>
