@@ -98,4 +98,16 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="action_share">Share</string>
     <string name="title_activity_main2">Main2Activity</string>
+
+    <!-- dog type  -->
+    <string-array name="dog_types_array">
+        <item>poodle</item>
+        <item>golden</item>
+        <item>german</item>
+        <item>mixed</item>
+        <item>cnaany</item>
+        <item>shiwawa</item>
+        <item>monkey</item>
+        <item>snake</item>
+    </string-array>
 </resources>

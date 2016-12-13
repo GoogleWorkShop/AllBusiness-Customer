@@ -26,8 +26,8 @@
             android:layout_weight="0.5"
             android:weightSum="1">
             <android.support.v7.widget.AppCompatImageView
-                android:layout_width="134dp"
-                android:layout_height="88dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:layout_weight="0.12"
                 android:background="@drawable/pet_pic"
                 />
@@ -39,6 +39,13 @@
                 android:layout_gravity="fill_vertical"
                 android:text="UPLOAD IMAGE"
                 android:layout_weight="0.01" />
+            <android.support.v7.widget.AppCompatSpinner
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:id="@+id/pet_type_spinner"
+                android:scrollbarStyle="outsideInset"
+                />
 
 
         </LinearLayout>
@@ -55,7 +62,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
-                android:text="name:"
+                android:hint="name:"
                 android:textSize="30dp"
                 android:id="@+id/editText" />
 
@@ -63,15 +70,19 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
-                android:text="age:"
+                android:hint="age:"
                 android:textSize="30dp"
                 android:inputType="number"
                 />
-            <android.support.v7.widget.AppCompatSpinner
+            <android.support.v7.widget.AppCompatTextView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
+                android:hint="TYPE:"
+                android:textSize="30dp"
                 />
+
+
 
         </LinearLayout>
 
